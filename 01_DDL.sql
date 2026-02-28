@@ -1,39 +1,49 @@
 -- =====================================================
--- DDL.sql - Creación de tablas FanHub
--- SQL Server
+-- 01_DDL.sql - Creación de tablas FanHub (CORREGIDO)
 -- =====================================================
 
+-- BLOQUE DE REINICIO SEGURO
+USE master;
+GO
+IF DB_ID('FanHub') IS NOT NULL
+BEGIN
+    ALTER DATABASE FanHub SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
+    DROP DATABASE FanHub;
+END
+GO
+CREATE DATABASE FanHub;
+GO
 USE FanHub;
 GO
 
 -- Tabla Usuario
 CREATE TABLE Usuario (
     id INT IDENTITY(1,1) PRIMARY KEY,
-    email VARCHAR(255) UNIQUE NOT NULL,
-    password_hash VARCHAR(255) NOT NULL,
-    nickname VARCHAR(100) UNIQUE NOT NULL,
+    email NVARCHAR(255) UNIQUE NOT NULL,
+    password_hash NVARCHAR(255) NOT NULL,
+    nickname NVARCHAR(100) UNIQUE NOT NULL,
     fecha_registro DATETIME DEFAULT GETDATE(),
     fecha_nacimiento DATE NOT NULL,
-    pais VARCHAR(100) NOT NULL,
+    pais NVARCHAR(100) NOT NULL,
     esta_activo BIT DEFAULT 1,
-    CONSTRAINT check_edad CHECK (DATEDIFF(YEAR, fecha_nacimiento, GETDATE()) >= 13)
+    CONSTRAINT check_edad CHECK (fecha_nacimiento <= DATEADD(YEAR, -13, GETDATE())) -- Lógica exacta
 );
 GO
 
 -- Tabla Categoria
 CREATE TABLE Categoria (
     id INT IDENTITY(1,1) PRIMARY KEY,
-    nombre VARCHAR(100) UNIQUE NOT NULL,
-    descripcion TEXT
+    nombre NVARCHAR(100) UNIQUE NOT NULL,
+    descripcion NVARCHAR(MAX) -- Corregido: TEXT está deprecado
 );
 GO
 
 -- Tabla Creador
 CREATE TABLE Creador (
     idUsuario INT PRIMARY KEY,
-    biografia TEXT,
-    banco_nombre VARCHAR(100),
-    banco_cuenta VARCHAR(50),
+    biografia NVARCHAR(MAX), -- Corregido
+    banco_nombre NVARCHAR(100),
+    banco_cuenta NVARCHAR(50),
     es_nsfw BIT DEFAULT 0,
     idCategoria INT NOT NULL,
     FOREIGN KEY (idUsuario) REFERENCES Usuario(id) ON DELETE CASCADE,
@@ -46,8 +56,8 @@ CREATE TABLE MetodoPago (
     id INT IDENTITY(1,1) PRIMARY KEY,
     idUsuario INT NOT NULL,
     ultimos_4_digitos CHAR(4) NOT NULL,
-    marca VARCHAR(50) NOT NULL,
-    titular VARCHAR(200) NOT NULL,
+    marca NVARCHAR(50) NOT NULL,
+    titular NVARCHAR(200) NOT NULL,
     fecha_expiracion DATE NOT NULL,
     es_predeterminado BIT DEFAULT 0,
     FOREIGN KEY (idUsuario) REFERENCES Usuario(id) ON DELETE CASCADE,
@@ -59,8 +69,8 @@ GO
 CREATE TABLE NivelSuscripcion (
     id INT IDENTITY(1,1) PRIMARY KEY,
     idCreador INT NOT NULL,
-    nombre VARCHAR(100) NOT NULL,
-    descripcion TEXT,
+    nombre NVARCHAR(100) NOT NULL,
+    descripcion NVARCHAR(MAX), -- Corregido
     precio_actual DECIMAL(10,2) NOT NULL,
     esta_activo BIT DEFAULT 1,
     orden INT NOT NULL,
@@ -78,11 +88,12 @@ CREATE TABLE Suscripcion (
     fecha_inicio DATETIME DEFAULT GETDATE(),
     fecha_renovacion DATETIME,
     fecha_fin DATETIME,
-    estado VARCHAR(20) NOT NULL,
+    estado NVARCHAR(20) NOT NULL,
     precio_pactado DECIMAL(10,2) NOT NULL,
     FOREIGN KEY (idUsuario) REFERENCES Usuario(id),
     FOREIGN KEY (idNivel) REFERENCES NivelSuscripcion(id),
-    CONSTRAINT check_estado_suscripcion CHECK (estado IN ('Activa', 'Cancelada', 'Vencida'))
+    CONSTRAINT check_estado_suscripcion CHECK (estado IN ('Activa', 'Cancelada', 'Vencida')),
+    CONSTRAINT check_precio_pactado_positivo CHECK (precio_pactado >= 0) -- Corregido: Regla B faltante
 );
 GO
 
@@ -90,7 +101,7 @@ GO
 CREATE TABLE Factura (
     id INT IDENTITY(1,1) PRIMARY KEY,
     idSuscripcion INT NOT NULL,
-    codigo_transaccion VARCHAR(100) UNIQUE NOT NULL,
+    codigo_transaccion NVARCHAR(100) UNIQUE NOT NULL,
     fecha_emision DATETIME DEFAULT GETDATE(),
     sub_total DECIMAL(10,2) NOT NULL,
     monto_impuesto DECIMAL(10,2) NOT NULL,
@@ -104,10 +115,10 @@ GO
 CREATE TABLE Publicacion (
     id INT IDENTITY(1,1) PRIMARY KEY,
     idCreador INT NOT NULL,
-    titulo VARCHAR(255) NOT NULL,
+    titulo NVARCHAR(255) NOT NULL,
     fecha_publicacion DATETIME DEFAULT GETDATE(),
     es_publica BIT DEFAULT 1,
-    tipo_contenido VARCHAR(10) NOT NULL,
+    tipo_contenido NVARCHAR(10) NOT NULL,
     FOREIGN KEY (idCreador) REFERENCES Creador(idUsuario) ON DELETE CASCADE,
     CONSTRAINT check_tipo_contenido CHECK (tipo_contenido IN ('VIDEO', 'TEXTO', 'IMAGEN'))
 );
@@ -117,8 +128,8 @@ GO
 CREATE TABLE Video (
     idPublicacion INT PRIMARY KEY,
     duracion_seg INT NOT NULL,
-    resolucion VARCHAR(10) NOT NULL,
-    url_stream VARCHAR(500) NOT NULL,
+    resolucion NVARCHAR(10) NOT NULL,
+    url_stream NVARCHAR(500) NOT NULL,
     FOREIGN KEY (idPublicacion) REFERENCES Publicacion(id) ON DELETE CASCADE,
     CONSTRAINT check_resolucion CHECK (resolucion IN ('720p', '1080p', '4K')),
     CONSTRAINT check_duracion CHECK (duracion_seg > 0)
@@ -128,8 +139,8 @@ GO
 -- Tabla Texto
 CREATE TABLE Texto (
     idPublicacion INT PRIMARY KEY,
-    contenido_html TEXT NOT NULL,
-    resumen_gratuito TEXT,
+    contenido_html NVARCHAR(MAX) NOT NULL, -- Corregido
+    resumen_gratuito NVARCHAR(MAX), -- Corregido
     FOREIGN KEY (idPublicacion) REFERENCES Publicacion(id) ON DELETE CASCADE
 );
 GO
@@ -139,9 +150,9 @@ CREATE TABLE Imagen (
     idPublicacion INT PRIMARY KEY,
     ancho INT NOT NULL,
     alto INT NOT NULL,
-    formato VARCHAR(10) NOT NULL,
-    alt_text VARCHAR(255),
-    url_imagen VARCHAR(500) NOT NULL,
+    formato NVARCHAR(10) NOT NULL,
+    alt_text NVARCHAR(255),
+    url_imagen NVARCHAR(500) NOT NULL,
     FOREIGN KEY (idPublicacion) REFERENCES Publicacion(id) ON DELETE CASCADE,
     CONSTRAINT check_dimensiones CHECK (ancho > 0 AND alto > 0)
 );
@@ -150,8 +161,8 @@ GO
 -- Tabla TipoReaccion
 CREATE TABLE TipoReaccion (
     id INT IDENTITY(1,1) PRIMARY KEY,
-    nombre VARCHAR(50) UNIQUE NOT NULL,
-    emoji_code VARCHAR(20) NOT NULL
+    nombre NVARCHAR(50) UNIQUE NOT NULL,
+    emoji_code NVARCHAR(20) NOT NULL -- Corregido: Ahora soporta los emojis del profe
 );
 GO
 
@@ -174,7 +185,7 @@ CREATE TABLE Comentario (
     idUsuario INT NOT NULL,
     idPublicacion INT NOT NULL,
     idComentarioPadre INT NULL,
-    texto TEXT NOT NULL,
+    texto NVARCHAR(MAX) NOT NULL, -- Corregido
     fecha DATETIME DEFAULT GETDATE(),
     FOREIGN KEY (idUsuario) REFERENCES Usuario(id),
     FOREIGN KEY (idPublicacion) REFERENCES Publicacion(id) ON DELETE CASCADE,
@@ -185,7 +196,7 @@ GO
 -- Tabla Etiqueta
 CREATE TABLE Etiqueta (
     id INT IDENTITY(1,1) PRIMARY KEY,
-    nombre VARCHAR(100) UNIQUE NOT NULL
+    nombre NVARCHAR(100) UNIQUE NOT NULL
 );
 GO
 
@@ -209,30 +220,6 @@ CREATE INDEX idx_reaccion_publicacion ON UsuarioReaccionPublicacion(idPublicacio
 GO
 
 PRINT '========================================';
-PRINT '✅ TABLAS CREADAS EXITOSAMENTE';
-PRINT '========================================';
-GO
-
--- ==========================================
--- MOSTRAR LISTA DE TABLAS CREADAS
--- ==========================================
-PRINT 'Lista de tablas creadas:';
-PRINT '';
-
-SELECT 
-    ROW_NUMBER() OVER (ORDER BY TABLE_NAME) as '#',
-    TABLE_NAME as 'Nombre de Tabla'
-FROM INFORMATION_SCHEMA.TABLES
-WHERE TABLE_TYPE = 'BASE TABLE'
-ORDER BY TABLE_NAME;
-GO
-
--- ==========================================
--- MOSTRAR TOTAL DE TABLAS (CORREGIDO)
--- ==========================================
-DECLARE @TotalTablas INT;
-SELECT @TotalTablas = COUNT(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE';
-PRINT '========================================';
-PRINT 'Total de tablas creadas: ' + CAST(@TotalTablas AS VARCHAR);
+PRINT '✅ TABLAS CREADAS Y CORREGIDAS EXITOSAMENTE';
 PRINT '========================================';
 GO
