@@ -1,2 +1,15 @@
-# Proyecto_BD
-Interactive project for the second half of 2025 focused on the structured development of a database in SQL Server using docker and azura to manage its behavior and queries
+# FanHub - Proyecto Base de Datos
+
+## Universidad Central de Venezuela
+### Facultad de Ciencias - Escuela de Computación
+### Bases de Datos [6303] - Proyecto Fase 2
+
+## 👥 Integrantes del Grupo
+- [Jorge Arias]
+- [Tobias Briceño]
+- [Gabriel Herrera]
+
+## 📋 Descripción del Proyecto
+Plataforma de suscripción a creadores de contenido similar a FanHub. Implementación completa de base de datos en SQL Server con carga masiva de datos, procedimientos almacenados, funciones y triggers.
+
+## 📁 Estructura de Archivos
