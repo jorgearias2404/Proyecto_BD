@@ -208,5 +208,31 @@ CREATE INDEX idx_comentario_publicacion ON Comentario(idPublicacion);
 CREATE INDEX idx_reaccion_publicacion ON UsuarioReaccionPublicacion(idPublicacion);
 GO
 
-PRINT '✅ Tablas creadas exitosamente';
+PRINT '========================================';
+PRINT '✅ TABLAS CREADAS EXITOSAMENTE';
+PRINT '========================================';
+GO
+
+-- ==========================================
+-- MOSTRAR LISTA DE TABLAS CREADAS
+-- ==========================================
+PRINT 'Lista de tablas creadas:';
+PRINT '';
+
+SELECT 
+    ROW_NUMBER() OVER (ORDER BY TABLE_NAME) as '#',
+    TABLE_NAME as 'Nombre de Tabla'
+FROM INFORMATION_SCHEMA.TABLES
+WHERE TABLE_TYPE = 'BASE TABLE'
+ORDER BY TABLE_NAME;
+GO
+
+-- ==========================================
+-- MOSTRAR TOTAL DE TABLAS (CORREGIDO)
+-- ==========================================
+DECLARE @TotalTablas INT;
+SELECT @TotalTablas = COUNT(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE';
+PRINT '========================================';
+PRINT 'Total de tablas creadas: ' + CAST(@TotalTablas AS VARCHAR);
+PRINT '========================================';
 GO
