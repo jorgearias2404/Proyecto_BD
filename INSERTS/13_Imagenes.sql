@@ -1,7 +1,7 @@
 -- ==========================================
 -- 13. DETALLES POR TIPO - IMÁGENES
 -- ==========================================
-USE FanHub;
+USE FanHub_BD;
 GO
 
 PRINT '========================================';
@@ -12,7 +12,7 @@ GO
 -- Limpiar imágenes existentes
 PRINT 'Eliminando imágenes anteriores...';
 DELETE FROM Imagen;
-PRINT '✅ Imágenes anteriores eliminadas';
+PRINT ' Imágenes anteriores eliminadas';
 GO
 
 PRINT 'Insertando detalles de imágenes...';
@@ -50,7 +50,7 @@ FROM Publicacion p
 WHERE p.tipo_contenido = 'IMAGEN'
 AND NOT EXISTS (SELECT 1 FROM Imagen i WHERE i.idPublicacion = p.id);
 
-PRINT '✅ Imágenes insertadas correctamente';
+PRINT ' Imágenes insertadas correctamente';
 GO
 
 -- ==========================================
@@ -84,6 +84,6 @@ ORDER BY i.idPublicacion;
 GO
 
 PRINT '========================================';
-PRINT '✅ IMÁGENES INSERTADAS CORRECTAMENTE';
+PRINT ' IMÁGENES INSERTADAS CORRECTAMENTE';
 PRINT '========================================';
 GO

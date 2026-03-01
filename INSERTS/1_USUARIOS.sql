@@ -265,5 +265,5 @@ INSERT INTO Usuario (email, password_hash, nickname, fecha_registro, fecha_nacim
 ('juan.martín.suárez259@hotmail.com', 'A46384AF377AAACF63877DFCCAE33129B5238BEBD29651D9503AF135918BC4D8', 'juamarrez59', '2025-06-12 22:14:01', '1962-12-30', 'Argentina', 1),
 ('óscar.castro.suárez260@icloud.com', '051584F1E69026113BA34D73D18B5D16E18B9B6256EBF57E8588B9E294769807', 'ósccasrez60', '2024-09-21 22:14:01', '1995-04-24', 'México', 1);
 
-PRINT '✅ 260 usuarios reales insertados correctamente';
+PRINT ' 260 usuarios reales insertados correctamente';
 GO

@@ -1,5 +1,5 @@
 -- ==========================================
--- 7. ASOCIACIONES ETIQUETAS-PUBLICACIONES (REFRESH - VERSIÓN ALTA)
+-- 7. ASOCIACIONES ETIQUETAS-PUBLICACIONES 
 -- ==========================================
 USE FanHub;
 GO
@@ -160,6 +160,6 @@ ORDER BY cat.nombre;
 GO
 
 PRINT '========================================';
-PRINT '✅ REFRESH COMPLETADO EXITOSAMENTE';
+PRINT ' REFRESH COMPLETADO EXITOSAMENTE';
 PRINT '========================================';
 GO

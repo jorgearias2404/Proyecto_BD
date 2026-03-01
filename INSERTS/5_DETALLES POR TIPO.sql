@@ -22,7 +22,7 @@ FROM Publicacion p
 WHERE p.tipo_contenido = 'VIDEO'
 AND NOT EXISTS (SELECT 1 FROM Video v WHERE v.idPublicacion = p.id);
 
-PRINT '✅ Videos insertados correctamente';
+PRINT ' Videos insertados correctamente';
 GO
 
 -- Verificar cuántos videos se insertaron

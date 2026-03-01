@@ -1,7 +1,7 @@
 -- ==========================================
 -- 10. REACCIONES (1600 registros nuevos con distribución realista)
 -- ==========================================
-USE FanHub;
+USE FanHub_BD;
 GO
 
 PRINT '========================================';
@@ -14,7 +14,7 @@ GO
 -- ==========================================
 PRINT 'Eliminando reacciones existentes...';
 DELETE FROM UsuarioReaccionPublicacion;
-PRINT '✅ Reacciones eliminadas';
+PRINT ' Reacciones eliminadas';
 GO
 
 -- ==========================================
@@ -85,7 +85,7 @@ BEGIN
         PRINT '  ✓ ' + CAST(@contador AS VARCHAR) + ' reacciones insertadas...';
 END;
 
-PRINT '✅ 1600 reacciones insertadas correctamente';
+PRINT ' 1600 reacciones insertadas correctamente';
 GO
 
 -- ==========================================
@@ -140,6 +140,6 @@ FROM UsuarioReaccionPublicacion;
 GO
 
 PRINT '========================================';
-PRINT '✅ REACCIONES GENERADAS EXITOSAMENTE';
+PRINT ' REACCIONES GENERADAS EXITOSAMENTE';
 PRINT '========================================';
 GO

@@ -2,18 +2,9 @@
 -- 01_DDL.sql - Creación de tablas FanHub (CORREGIDO)
 -- =====================================================
 
--- BLOQUE DE REINICIO SEGURO
-USE master;
+CREATE DATABASE FanHub_BD;
 GO
-IF DB_ID('FanHub') IS NOT NULL
-BEGIN
-    ALTER DATABASE FanHub SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
-    DROP DATABASE FanHub;
-END
-GO
-CREATE DATABASE FanHub;
-GO
-USE FanHub;
+USE FanHub_BD;
 GO
 
 -- Tabla Usuario
@@ -220,6 +211,6 @@ CREATE INDEX idx_reaccion_publicacion ON UsuarioReaccionPublicacion(idPublicacio
 GO
 
 PRINT '========================================';
-PRINT '✅ TABLAS CREADAS Y CORREGIDAS EXITOSAMENTE';
+PRINT 'TABLAS CREADAS Y CORREGIDAS EXITOSAMENTE';
 PRINT '========================================';
 GO

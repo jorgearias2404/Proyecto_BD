@@ -65,5 +65,5 @@ INSERT INTO NivelSuscripcion (idCreador, nombre, descripcion, precio_actual, est
 (26, 'Básico', 'Acceso a contenido general y publicaciones públicas.', 14.99, 1, 1),
 (26, 'Premium', 'Acceso a contenido exclusivo y descuentos.', 37.48, 1, 2);
 
-PRINT '✅ 57 niveles de suscripción insertados';
+PRINT ' 57 niveles de suscripción insertados';
 GO

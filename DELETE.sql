@@ -1,7 +1,7 @@
 -- ==========================================
 -- SCRIPT PARA ELIMINAR TODAS LAS TABLAS DE FANHUB
 -- ==========================================
-USE FanHub;
+USE FanHub_BD;
 GO
 
 PRINT '========================================';
@@ -14,7 +14,7 @@ GO
 -- ==========================================
 PRINT 'Deshabilitando restricciones de claves foráneas...';
 EXEC sp_MSforeachtable "ALTER TABLE ? NOCHECK CONSTRAINT ALL";
-PRINT '✅ Restricciones deshabilitadas';
+PRINT ' Restricciones deshabilitadas';
 GO
 
 -- ==========================================
@@ -71,7 +71,7 @@ PRINT '✓ Eliminada: Categoria';
 DROP TABLE IF EXISTS Usuario;
 PRINT '✓ Eliminada: Usuario';
 
-PRINT '✅ Todas las tablas eliminadas';
+PRINT ' Todas las tablas eliminadas';
 GO
 
 -- ==========================================
@@ -79,7 +79,7 @@ GO
 -- ==========================================
 PRINT 'Rehabilitando restricciones de claves foráneas...';
 EXEC sp_MSforeachtable "ALTER TABLE ? CHECK CONSTRAINT ALL";
-PRINT '✅ Restricciones rehabilitadas';
+PRINT ' Restricciones rehabilitadas';
 GO
 
 -- ==========================================
@@ -96,12 +96,12 @@ WHERE TABLE_TYPE = 'BASE TABLE'
 ORDER BY TABLE_NAME;
 
 IF @@ROWCOUNT = 0
-    PRINT '✅ No quedan tablas en la base de datos';
+    PRINT ' No quedan tablas en la base de datos';
 ELSE
-    PRINT '❌ Aún existen tablas en la base de datos';
+    PRINT ' Aún existen tablas en la base de datos';
 GO
 
 PRINT '========================================';
-PRINT '✅ PROCESO DE ELIMINACIÓN COMPLETADO';
+PRINT ' PROCESO DE ELIMINACIÓN COMPLETADO';
 PRINT '========================================';
 GO

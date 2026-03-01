@@ -11,7 +11,7 @@ GO
 -- ==========================================
 PRINT 'Eliminando métodos de pago existentes...';
 DELETE FROM MetodoPago;
-PRINT '✅ Métodos de pago eliminados';
+PRINT 'Métodos de pago eliminados';
 GO
 
 -- ==========================================
@@ -45,7 +45,7 @@ FROM Usuario u
 WHERE u.esta_activo = 1
 ORDER BY u.id;
 
-PRINT '✅ 260 métodos de pago insertados correctamente';
+PRINT ' 260 métodos de pago insertados correctamente';
 GO
 
 -- ==========================================
@@ -81,6 +81,6 @@ ORDER BY idUsuario;
 GO
 
 PRINT '========================================';
-PRINT '✅ MÉTODOS DE PAGO REGENERADOS EXITOSAMENTE';
+PRINT ' MÉTODOS DE PAGO REGENERADOS EXITOSAMENTE';
 PRINT '========================================';
 GO

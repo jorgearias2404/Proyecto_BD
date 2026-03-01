@@ -1,7 +1,7 @@
 -- ==========================================
 -- 8. SUSCRIPCIONES (550 registros reales)
 -- ==========================================
-USE FanHub;
+USE FanHub_BD;
 GO
 
 PRINT '========================================';
@@ -12,7 +12,7 @@ GO
 -- Limpiar suscripciones existentes
 PRINT 'Eliminando suscripciones anteriores...';
 DELETE FROM Suscripcion;
-PRINT '✅ Suscripciones anteriores eliminadas';
+PRINT ' Suscripciones anteriores eliminadas';
 GO
 
 PRINT 'Insertando 550 suscripciones reales...';
@@ -570,7 +570,7 @@ INSERT INTO Suscripcion (idUsuario, idNivel, fecha_inicio, fecha_renovacion, fec
 (188, 31, '2025-08-25 23:02:22.670', '2025-09-25 23:02:22.670', NULL, 'Activa', 7.99),
 (194, 21, '2026-02-05 23:02:22.670', '2026-03-05 23:02:22.670', NULL, 'Activa', 7.99);
 
-PRINT '✅ 550 suscripciones insertadas correctamente';
+PRINT ' 550 suscripciones insertadas correctamente';
 GO
 
 -- ==========================================
@@ -588,6 +588,6 @@ FROM Suscripcion;
 GO
 
 PRINT '========================================';
-PRINT '✅ SUSCRIPCIONES INSERTADAS CORRECTAMENTE';
+PRINT ' SUSCRIPCIONES INSERTADAS CORRECTAMENTE';
 PRINT '========================================';
 GO

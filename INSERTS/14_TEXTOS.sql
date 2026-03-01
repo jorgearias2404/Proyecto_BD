@@ -1,7 +1,7 @@
 -- ==========================================
 -- 5. DETALLES POR TIPO - TEXTOS
 -- ==========================================
-USE FanHub;
+USE FanHub_BD;
 GO
 
 PRINT '========================================';
@@ -12,7 +12,7 @@ GO
 -- Limpiar textos existentes
 PRINT 'Eliminando textos anteriores...';
 DELETE FROM Texto;
-PRINT '✅ Textos anteriores eliminados';
+PRINT ' Textos anteriores eliminados';
 GO
 
 PRINT 'Insertando detalles de textos...';
@@ -68,7 +68,7 @@ SELECT
     -- Resumen gratuito (solo para contenido exclusivo)
     CASE 
         WHEN p.es_publica = 0 THEN
-            '📌 RESUMEN GRATUITO: ' + 
+            ' RESUMEN GRATUITO: ' + 
             CASE ABS(CHECKSUM(NEWID())) % 4
                 WHEN 0 THEN 'En este artículo exclusivo hablamos sobre ' + p.titulo + '. Los suscriptores acceden al análisis completo, ejemplos detallados y casos prácticos.'
                 WHEN 1 THEN 'Descubre los secretos mejor guardados de ' + p.titulo + '. Suscríbete para leer el artículo completo.'
@@ -81,7 +81,7 @@ FROM Publicacion p
 WHERE p.tipo_contenido = 'TEXTO'
 AND NOT EXISTS (SELECT 1 FROM Texto t WHERE t.idPublicacion = p.id);
 
-PRINT '✅ Textos insertados correctamente';
+PRINT ' Textos insertados correctamente';
 GO
 
 -- ==========================================
@@ -142,6 +142,6 @@ SELECT
 FROM Texto;
 
 PRINT '========================================';
-PRINT '✅ TEXTOS INSERTADOS CORRECTAMENTE';
+PRINT 'TEXTOS INSERTADOS CORRECTAMENTE';
 PRINT '========================================';
 GO

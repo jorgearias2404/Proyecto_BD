@@ -42,5 +42,5 @@ INSERT INTO Etiqueta (nombre) VALUES
 ('Xbox'),
 ('Yoga');
 
-PRINT '✅ 37 etiquetas insertadas correctamente';
+PRINT ' 37 etiquetas insertadas correctamente';
 GO

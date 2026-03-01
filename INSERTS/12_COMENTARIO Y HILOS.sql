@@ -1,7 +1,7 @@
 -- ==========================================
 -- 11. COMENTARIOS (1100 registros: 950 principales + 150 hilos)
 -- ==========================================
-USE FanHub;
+USE FanHub_BD;
 GO
 
 PRINT '========================================';
@@ -14,7 +14,7 @@ GO
 -- ==========================================
 PRINT 'Eliminando comentarios existentes...';
 DELETE FROM Comentario;
-PRINT '✅ Comentarios eliminados';
+PRINT ' Comentarios eliminados';
 GO
 
 -- ==========================================
@@ -54,7 +54,7 @@ INSERT INTO #TempTextosComentarios (texto) VALUES
 ('Calidad de contenido como siempre'),
 ('No puedo creer que sea gratis esto');
 
-PRINT '✅ Tabla temporal creada';
+PRINT ' Tabla temporal creada';
 GO
 
 -- ==========================================
@@ -108,7 +108,7 @@ BEGIN
         PRINT '  ✓ ' + CAST(@comentario_id AS VARCHAR) + ' comentarios principales insertados...';
 END;
 
-PRINT '✅ 950 comentarios principales insertados';
+PRINT ' 950 comentarios principales insertados';
 GO
 
 -- ==========================================
@@ -188,7 +188,7 @@ BEGIN
         PRINT '  ✓ ' + CAST(@hilo_id AS VARCHAR) + ' hilos insertados...';
 END;
 
-PRINT '✅ 150 hilos de conversación insertados';
+PRINT ' 150 hilos de conversación insertados';
 GO
 
 -- ==========================================
@@ -250,6 +250,6 @@ JOIN Usuario u ON c.idUsuario = u.id
 ORDER BY c.fecha DESC;
 
 PRINT '========================================';
-PRINT '✅ COMENTARIOS GENERADOS EXITOSAMENTE';
+PRINT 'COMENTARIOS GENERADOS EXITOSAMENTE';
 PRINT '========================================';
 GO

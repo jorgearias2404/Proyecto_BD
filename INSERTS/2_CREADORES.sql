@@ -31,5 +31,5 @@ INSERT INTO Creador (idUsuario, biografia, banco_nombre, banco_cuenta, es_nsfw, 
 (25, 'Músico. Covers y lecciones de guitarra.', 'BBVA', '118285000009473', 0, 6),
 (26, 'Chef. Recetas fáciles y rápidas.', 'Banco de Chile', '119240000007717', 1, 7);
 
-PRINT '✅ 26 creadores reales insertados correctamente';
+PRINT ' 26 creadores reales insertados correctamente';
 GO

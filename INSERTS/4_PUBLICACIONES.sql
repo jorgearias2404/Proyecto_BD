@@ -855,5 +855,5 @@ INSERT INTO Publicacion (idCreador, titulo, fecha_publicacion, es_publica, tipo_
 (17, 'Publicación 849 - IMAGEN', '2026-01-25 22:42:46', 1, 'IMAGEN'),
 (18, 'Publicación 850 - VIDEO', '2025-10-17 22:42:46', 0, 'VIDEO');
 
-PRINT '✅ 850 publicaciones insertadas correctamente';
+PRINT ' 850 publicaciones insertadas correctamente';
 GO
