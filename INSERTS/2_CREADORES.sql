@@ -1,9 +1,10 @@
 -- ==========================================
--- 2. CREADORES (26 registros reales)
+-- 2. CREADORES (30 registros - 26 normales + 4 polémicos)
 -- ==========================================
-PRINT 'Insertando 26 creadores reales...';
+PRINT 'Insertando 30 creadores reales...';
 
 INSERT INTO Creador (idUsuario, biografia, banco_nombre, banco_cuenta, es_nsfw, idCategoria) VALUES 
+-- Creadores originales (1-26)
 (1, 'Gamer profesional. Gameplays y streams diarios.', 'BBVA', '147646000097964', 0, 2),
 (2, 'Entrenador personal. Rutinas de ejercicio y nutrición.', 'Banco de Chile', '1720510000091962', 0, 3),
 (3, 'Tech reviewer. Análisis de gadgets y tecnología.', 'Bancolombia', '116367000005374', 0, 4),
@@ -29,7 +30,15 @@ INSERT INTO Creador (idUsuario, biografia, banco_nombre, banco_cuenta, es_nsfw, 
 (23, 'Tech reviewer. Análisis de gadgets y tecnología.', 'Bancolombia', '117127000007153', 0, 4),
 (24, 'Artista digital. Ilustraciones y comisiones.', 'Banco Santander', '171601000004310', 0, 5),
 (25, 'Músico. Covers y lecciones de guitarra.', 'BBVA', '118285000009473', 0, 6),
-(26, 'Chef. Recetas fáciles y rápidas.', 'Banco de Chile', '119240000007717', 1, 7);
+(26, 'Chef. Recetas fáciles y rápidas.', 'Banco de Chile', '119240000007717', 1, 7),
 
-PRINT ' 26 creadores reales insertados correctamente';
+-- ==========================================
+-- 4 CREADORES POLÉMICOS (27-30)
+-- ==========================================
+(27, 'Crítico controversial. Opiniones que nadie quiere escuchar.', 'Banco Santander', '271234000056789', 0, 10), -- Comedia
+(28, 'Debatidor profesional. Temas que generan discusión.', 'BBVA', '281234000067890', 0, 18), -- Política y Noticias
+(29, 'Opinólogo extremo. Siempre tengo una opinión diferente.', 'Banco de Chile', '291234000078901', 0, 9), -- ASMR (irónico)
+(30, 'El que siempre lleva la contraria. Debate todo.', 'Bancolombia', '301234000089012', 0, 10); -- Comedia
+
+PRINT '✅ 30 creadores insertados correctamente (26 normales + 4 polémicos)';
 GO

@@ -1,107 +1,53 @@
 -- ==========================================
--- SCRIPT PARA ELIMINAR TODAS LAS TABLAS DE FANHUB
+-- SCRIPT PARA ELIMINAR TODAS LAS TABLAS Y LA BASE DE DATOS
 -- ==========================================
-USE FanHub_BD;
+USE master;
 GO
 
 PRINT '========================================';
-PRINT 'ELIMINANDO TODAS LAS TABLAS DE FANHUB';
+PRINT 'ELIMINANDO BASE DE DATOS FANHUB_BD';
 PRINT '========================================';
 GO
 
 -- ==========================================
--- 1. DESHABILITAR RESTRICCIONES DE LLAVES FORÁNEAS TEMPORALMENTE
+-- 1. CAMBIAR A MASTER Y FORZAR CIERRE DE CONEXIONES
 -- ==========================================
-PRINT 'Deshabilitando restricciones de claves foráneas...';
-EXEC sp_MSforeachtable "ALTER TABLE ? NOCHECK CONSTRAINT ALL";
-PRINT ' Restricciones deshabilitadas';
+PRINT 'Forzando cierre de conexiones a la base de datos...';
+
+-- Poner la base de datos en modo SINGLE_USER para desconectar todas las conexiones
+ALTER DATABASE FanHub_BD SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
+PRINT '✓ Conexiones cerradas';
 GO
 
 -- ==========================================
--- 2. ELIMINAR TABLAS EN ORDEN INVERSO DE DEPENDENCIAS
+-- 2. ELIMINAR LA BASE DE DATOS
 -- ==========================================
-PRINT 'Eliminando tablas en orden inverso...';
+PRINT 'Eliminando base de datos FanHub_BD...';
 
--- Tablas de relaciones muchos a muchos y dependientes
-DROP TABLE IF EXISTS UsuarioReaccionPublicacion;
-PRINT '✓ Eliminada: UsuarioReaccionPublicacion';
-
-DROP TABLE IF EXISTS PublicacionEtiqueta;
-PRINT '✓ Eliminada: PublicacionEtiqueta';
-
-DROP TABLE IF EXISTS Comentario;
-PRINT '✓ Eliminada: Comentario';
-
-DROP TABLE IF EXISTS Video;
-PRINT '✓ Eliminada: Video';
-
-DROP TABLE IF EXISTS Texto;
-PRINT '✓ Eliminada: Texto';
-
-DROP TABLE IF EXISTS Imagen;
-PRINT '✓ Eliminada: Imagen';
-
-DROP TABLE IF EXISTS Factura;
-PRINT '✓ Eliminada: Factura';
-
-DROP TABLE IF EXISTS Suscripcion;
-PRINT '✓ Eliminada: Suscripcion';
-
-DROP TABLE IF EXISTS NivelSuscripcion;
-PRINT '✓ Eliminada: NivelSuscripcion';
-
-DROP TABLE IF EXISTS MetodoPago;
-PRINT '✓ Eliminada: MetodoPago';
-
-DROP TABLE IF EXISTS Publicacion;
-PRINT '✓ Eliminada: Publicacion';
-
-DROP TABLE IF EXISTS Creador;
-PRINT '✓ Eliminada: Creador';
-
-DROP TABLE IF EXISTS Etiqueta;
-PRINT '✓ Eliminada: Etiqueta';
-
-DROP TABLE IF EXISTS TipoReaccion;
-PRINT '✓ Eliminada: TipoReaccion';
-
-DROP TABLE IF EXISTS Categoria;
-PRINT '✓ Eliminada: Categoria';
-
-DROP TABLE IF EXISTS Usuario;
-PRINT '✓ Eliminada: Usuario';
-
-PRINT ' Todas las tablas eliminadas';
+DROP DATABASE IF EXISTS FanHub_BD;
+PRINT '✓ Base de datos eliminada';
 GO
 
 -- ==========================================
--- 3. REHABILITAR RESTRICCIONES (OPCIONAL)
--- ==========================================
-PRINT 'Rehabilitando restricciones de claves foráneas...';
-EXEC sp_MSforeachtable "ALTER TABLE ? CHECK CONSTRAINT ALL";
-PRINT ' Restricciones rehabilitadas';
-GO
-
--- ==========================================
--- 4. VERIFICAR QUE NO QUEDAN TABLAS
+-- 3. VERIFICAR QUE LA BASE DE DATOS YA NO EXISTE
 -- ==========================================
 PRINT '========================================';
-PRINT 'VERIFICANDO TABLAS RESTANTES:';
+PRINT 'VERIFICANDO BASES DE DATOS RESTANTES:';
 PRINT '========================================';
 
 SELECT 
-    TABLE_NAME as TablasRestantes
-FROM INFORMATION_SCHEMA.TABLES
-WHERE TABLE_TYPE = 'BASE TABLE'
-ORDER BY TABLE_NAME;
+    name AS BasesDeDatosRestantes
+FROM sys.databases
+WHERE name LIKE '%FanHub%'
+ORDER BY name;
 
 IF @@ROWCOUNT = 0
-    PRINT ' No quedan tablas en la base de datos';
+    PRINT '✓ No quedan bases de datos con el nombre FanHub';
 ELSE
-    PRINT ' Aún existen tablas en la base de datos';
+    PRINT '⚠️ Aún existen bases de datos con ese nombre';
 GO
 
 PRINT '========================================';
-PRINT ' PROCESO DE ELIMINACIÓN COMPLETADO';
+PRINT '✅ PROCESO DE ELIMINACIÓN COMPLETADO';
 PRINT '========================================';
 GO

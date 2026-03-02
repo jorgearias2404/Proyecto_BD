@@ -55,7 +55,7 @@ BEGIN
     -- Seleccionar usuario aleatorio (que no sea creador, id > 26)
     SELECT TOP 1 @idUsuario = id 
     FROM Usuario 
-    WHERE id > 26 AND esta_activo = 1
+    WHERE (id BETWEEN 27 AND 50 OR id > 60) AND esta_activo = 1
     ORDER BY NEWID();
     
     -- Seleccionar publicación aleatoria

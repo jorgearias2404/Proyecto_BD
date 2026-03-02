@@ -168,26 +168,47 @@ GROUP BY
 GO
 
 PRINT '========================================';
-PRINT 'REPORTE 9: Creadores Polémicos';
+PRINT 'REPORTE 9: Creadores Polémicos (INCLUYE PUBLICACIONES SIN REACCIONES)';
 PRINT '========================================';
--- Creadores con Ratio (Comentarios/Reacciones) > 2.0.
+
 WITH EstadisticasPosts AS (
     SELECT 
         p.idCreador,
         p.id AS idPublicacion,
-        CAST((SELECT COUNT(*) FROM Comentario WHERE idPublicacion = p.id) AS DECIMAL(10,2)) / 
-        NULLIF((SELECT COUNT(*) FROM UsuarioReaccionPublicacion WHERE idPublicacion = p.id), 0) AS Ratio
+        -- Contar comentarios y reacciones
+        (SELECT COUNT(*) FROM Comentario WHERE idPublicacion = p.id) AS TotalComentarios,
+        (SELECT COUNT(*) FROM UsuarioReaccionPublicacion WHERE idPublicacion = p.id) AS TotalReacciones
     FROM Publicacion p
+    WHERE (SELECT COUNT(*) FROM Comentario WHERE idPublicacion = p.id) > 0 -- Solo publicaciones con comentarios
+),
+RatiosPorPublicacion AS (
+    SELECT 
+        idCreador,
+        -- Ratio: si no hay reacciones, consideramos que el ratio es alto pero no infinito
+        CASE 
+            WHEN TotalReacciones = 0 THEN TotalComentarios * 1.0 -- Por ejemplo, 10 comentarios = ratio 10
+            ELSE CAST(TotalComentarios AS FLOAT) / TotalReacciones
+        END AS Ratio
+    FROM EstadisticasPosts
+),
+PromedioPorCreador AS (
+    SELECT 
+        idCreador,
+        AVG(Ratio) AS RatioPromedio,
+        COUNT(*) AS PostsEvaluados
+    FROM RatiosPorPublicacion
+    GROUP BY idCreador
 )
 SELECT 
     u.nickname AS [Nickname],
-    COUNT(ep.idPublicacion) AS [Cantidad Posts Evaluados],
-    AVG(ep.Ratio) AS [Ratio Promedio]
-FROM EstadisticasPosts ep
-JOIN Usuario u ON ep.idCreador = u.id
-GROUP BY u.nickname
-HAVING AVG(ep.Ratio) > 2.0;
+    pp.PostsEvaluados AS [Cantidad Posts Evaluados],
+    CAST(pp.RatioPromedio AS DECIMAL(10,2)) AS [Ratio Promedio]
+FROM PromedioPorCreador pp
+JOIN Usuario u ON pp.idCreador = u.id
+WHERE pp.RatioPromedio > 2.0
+ORDER BY pp.RatioPromedio DESC;
 GO
+
 
 PRINT '========================================';
 PRINT 'REPORTE 10: Ranking de Creadores (Reputación)';

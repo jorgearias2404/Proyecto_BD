@@ -2,7 +2,7 @@
 -- Verificacion.sql - Consultas para verificar los datos
 -- =====================================================
 
-USE FanHub;
+USE FanHub_BD;
 GO
 
 -- Verificar todas las tablas
