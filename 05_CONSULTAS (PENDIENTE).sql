@@ -272,19 +272,32 @@ GO
 PRINT '========================================';
 PRINT 'REPORTE 14: Reporte de Nómina (Liquidación)';
 PRINT '========================================';
--- Liquidación del mes actual (80% para el creador, 20% FanHub).
+-- Liquidación del último mes con facturas
+
+WITH UltimoMesFacturas AS (
+    SELECT TOP 1
+        YEAR(fecha_emision) AS Anio,
+        MONTH(fecha_emision) AS Mes
+    FROM Factura
+    GROUP BY YEAR(fecha_emision), MONTH(fecha_emision)
+    ORDER BY Anio DESC, Mes DESC
+)
 SELECT 
     cr.banco_nombre AS [Nombre Banco],
     cr.banco_cuenta AS [Cuenta Bancaria],
     u.nickname AS [Beneficiario (Nickname)],
-    SUM(f.sub_total) AS [Total Facturado (Bruto)],
-    SUM(f.sub_total) * 0.20 AS [Comisión FanHub],
-    SUM(f.sub_total) * 0.80 AS [Monto a Transferir (Neto)]
+    ISNULL(SUM(f.sub_total), 0) AS [Total Facturado (Bruto)],
+    ISNULL(SUM(f.sub_total) * 0.20, 0) AS [Comisión FanHub],
+    ISNULL(SUM(f.sub_total) * 0.80, 0) AS [Monto a Transferir (Neto)]
 FROM Creador cr
 JOIN Usuario u ON cr.idUsuario = u.id
-JOIN NivelSuscripcion n ON cr.idUsuario = n.idCreador
-JOIN Suscripcion s ON n.id = s.idNivel
-JOIN Factura f ON s.id = f.idSuscripcion
-WHERE MONTH(f.fecha_emision) = MONTH(GETDATE()) AND YEAR(f.fecha_emision) = YEAR(GETDATE())
-GROUP BY cr.banco_nombre, cr.banco_cuenta, u.nickname;
+LEFT JOIN NivelSuscripcion n ON cr.idUsuario = n.idCreador AND n.esta_activo = 1
+LEFT JOIN Suscripcion s ON n.id = s.idNivel AND s.estado = 'Activa'
+LEFT JOIN Factura f ON s.id = f.idSuscripcion
+CROSS JOIN UltimoMesFacturas umf
+WHERE YEAR(f.fecha_emision) = umf.Anio 
+  AND MONTH(f.fecha_emision) = umf.Mes
+GROUP BY cr.banco_nombre, cr.banco_cuenta, u.nickname
+HAVING ISNULL(SUM(f.sub_total), 0) > 0
+ORDER BY [Monto a Transferir (Neto)] DESC;
 GO
