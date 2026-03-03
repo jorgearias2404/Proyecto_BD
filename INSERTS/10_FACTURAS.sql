@@ -1,5 +1,5 @@
 -- ==========================================
--- 9. FACTURAS (550 registros reales)
+-- 10. FACTURAS (550 registros reales)
 -- ==========================================
 USE FanHub_BD;
 GO

@@ -1,5 +1,5 @@
 -- ==========================================
--- 5. DETALLES POR TIPO - TEXTOS
+-- 14. DETALLES POR TIPO - TEXTOS
 -- ==========================================
 USE FanHub_BD;
 GO

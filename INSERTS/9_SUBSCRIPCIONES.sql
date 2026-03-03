@@ -1,5 +1,5 @@
 -- ==========================================
--- 8. SUSCRIPCIONES (550 registros reales)
+--9. SUSCRIPCIONES (550 registros reales)
 -- ==========================================
 USE FanHub_BD;
 GO

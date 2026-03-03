@@ -1,5 +1,5 @@
 -- ==========================================
--- 11. COMENTARIOS (1100 registros: 950 principales + 150 hilos)
+-- 12 COMENTARIOS (1100 registros: 950 principales + 150 hilos)
 -- ==========================================
 USE FanHub_BD;
 GO

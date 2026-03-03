@@ -1,5 +1,5 @@
 -- ==========================================
--- 10. REACCIONES (1600 registros nuevos con distribución realista)
+-- 11. REACCIONES (1600 registros nuevos con distribución realista)
 -- ==========================================
 USE FanHub_BD;
 GO
