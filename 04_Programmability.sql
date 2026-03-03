@@ -142,7 +142,7 @@ PRINT '========================================';
 GO
 
 -- ====================================================================
--- SP 1: Procesar Nueva Suscripción y Generar Factura
+--  Procesar Nueva Suscripción y Generar Factura
 -- Lógica: Crea la suscripción y su factura automáticamente en una sola transacción.
 -- ====================================================================
 CREATE OR ALTER PROCEDURE sp_nueva_suscripcion
@@ -198,7 +198,7 @@ END;
 GO
 
 -- ====================================================================
--- SP 2: Cancelar Suscripción
+--  Cancelar Suscripción
 -- Lógica: Actualiza el estado a 'Cancelada' y corta las fechas de renovación.
 -- ====================================================================
 CREATE OR ALTER PROCEDURE sp_cancelar_suscripcion

@@ -1,5 +1,5 @@
 -- =====================================================
--- 01_DDL.sql - Creación de tablas FanHub (CORREGIDO)
+-- 01_DDL.sql - Creación de tablas FanHub 
 -- =====================================================
 
 CREATE DATABASE FanHub_BD;
@@ -17,7 +17,7 @@ CREATE TABLE Usuario (
     fecha_nacimiento DATE NOT NULL,
     pais NVARCHAR(100) NOT NULL,
     esta_activo BIT DEFAULT 1,
-    CONSTRAINT check_edad CHECK (fecha_nacimiento <= DATEADD(YEAR, -13, GETDATE())) -- Lógica exacta
+    CONSTRAINT check_edad CHECK (fecha_nacimiento <= DATEADD(YEAR, -13, GETDATE()))     -- que el usuario tenga mínimo 13 años
 );
 GO
 
@@ -25,14 +25,14 @@ GO
 CREATE TABLE Categoria (
     id INT IDENTITY(1,1) PRIMARY KEY,
     nombre NVARCHAR(100) UNIQUE NOT NULL,
-    descripcion NVARCHAR(MAX) -- Corregido: TEXT está deprecado
+    descripcion NVARCHAR(MAX) 
 );
 GO
 
 -- Tabla Creador
 CREATE TABLE Creador (
     idUsuario INT PRIMARY KEY,
-    biografia NVARCHAR(MAX), -- Corregido
+    biografia NVARCHAR(MAX), 
     banco_nombre NVARCHAR(100),
     banco_cuenta NVARCHAR(50),
     es_nsfw BIT DEFAULT 0,
@@ -61,7 +61,7 @@ CREATE TABLE NivelSuscripcion (
     id INT IDENTITY(1,1) PRIMARY KEY,
     idCreador INT NOT NULL,
     nombre NVARCHAR(100) NOT NULL,
-    descripcion NVARCHAR(MAX), -- Corregido
+    descripcion NVARCHAR(MAX),
     precio_actual DECIMAL(10,2) NOT NULL,
     esta_activo BIT DEFAULT 1,
     orden INT NOT NULL,
@@ -84,7 +84,7 @@ CREATE TABLE Suscripcion (
     FOREIGN KEY (idUsuario) REFERENCES Usuario(id),
     FOREIGN KEY (idNivel) REFERENCES NivelSuscripcion(id),
     CONSTRAINT check_estado_suscripcion CHECK (estado IN ('Activa', 'Cancelada', 'Vencida')),
-    CONSTRAINT check_precio_pactado_positivo CHECK (precio_pactado >= 0) -- Corregido: Regla B faltante
+    CONSTRAINT check_precio_pactado_positivo CHECK (precio_pactado >= 0) 
 );
 GO
 
@@ -130,8 +130,8 @@ GO
 -- Tabla Texto
 CREATE TABLE Texto (
     idPublicacion INT PRIMARY KEY,
-    contenido_html NVARCHAR(MAX) NOT NULL, -- Corregido
-    resumen_gratuito NVARCHAR(MAX), -- Corregido
+    contenido_html NVARCHAR(MAX) NOT NULL, 
+    resumen_gratuito NVARCHAR(MAX), 
     FOREIGN KEY (idPublicacion) REFERENCES Publicacion(id) ON DELETE CASCADE
 );
 GO
@@ -153,7 +153,7 @@ GO
 CREATE TABLE TipoReaccion (
     id INT IDENTITY(1,1) PRIMARY KEY,
     nombre NVARCHAR(50) UNIQUE NOT NULL,
-    emoji_code NVARCHAR(20) NOT NULL -- Corregido: Ahora soporta los emojis del profe
+    emoji_code NVARCHAR(20) NOT NULL 
 );
 GO
 
@@ -176,7 +176,7 @@ CREATE TABLE Comentario (
     idUsuario INT NOT NULL,
     idPublicacion INT NOT NULL,
     idComentarioPadre INT NULL,
-    texto NVARCHAR(MAX) NOT NULL, -- Corregido
+    texto NVARCHAR(MAX) NOT NULL, 
     fecha DATETIME DEFAULT GETDATE(),
     FOREIGN KEY (idUsuario) REFERENCES Usuario(id),
     FOREIGN KEY (idPublicacion) REFERENCES Publicacion(id) ON DELETE CASCADE,

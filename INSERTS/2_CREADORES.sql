@@ -40,5 +40,5 @@ INSERT INTO Creador (idUsuario, biografia, banco_nombre, banco_cuenta, es_nsfw, 
 (29, 'Opinólogo extremo. Siempre tengo una opinión diferente.', 'Banco de Chile', '291234000078901', 0, 9), -- ASMR (irónico)
 (30, 'El que siempre lleva la contraria. Debate todo.', 'Bancolombia', '301234000089012', 0, 10); -- Comedia
 
-PRINT '✅ 30 creadores insertados correctamente (26 normales + 4 polémicos)';
+PRINT ' 30 creadores insertados correctamente (26 normales + 4 polémicos)';
 GO

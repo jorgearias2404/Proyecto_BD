@@ -1,5 +1,5 @@
 -- ==========================================
--- 6. ETIQUETAS (37 registros) - VERSIÓN CORREGIDA
+-- 6. ETIQUETAS (37 registros) 
 -- ==========================================
 USE FanHub_BD;
 GO

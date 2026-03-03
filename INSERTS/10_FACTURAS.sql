@@ -12,7 +12,7 @@ PRINT 'Generando Facturas dinámicas para las suscripciones existentes...';
 
 INSERT INTO Factura (idSuscripcion, codigo_transaccion, fecha_emision, sub_total, monto_impuesto, monto_total)
 SELECT 
-    id, -- Toma el ID real de la suscripción que sí existe en tu BD
+    id, -- Toma el ID real de la suscripción que sí existe en la BD
     'TXN-' + CAST(id AS NVARCHAR(20)) + '-' + REPLACE(CONVERT(NVARCHAR, fecha_inicio, 112), '/', ''),
     fecha_inicio,
     precio_pactado,

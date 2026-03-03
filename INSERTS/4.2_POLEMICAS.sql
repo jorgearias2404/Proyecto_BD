@@ -134,17 +134,17 @@ END;
 CLOSE cursor_polemicos;
 DEALLOCATE cursor_polemicos;
 
-PRINT '✅ Publicaciones polémicas creadas (3 por cada creador)';
+PRINT 'Publicaciones polémicas creadas (3 por cada creador)';
 GO
 
 -- ==========================================
--- 3. VERIFICACIÓN CON LOS NOMBRES CORRECTOS (CORREGIDO)
+-- 3. VERIFICACIÓN CON LOS NOMBRES CORRECTOS 
 -- ==========================================
 PRINT '';
 PRINT 'RESUMEN DE PUBLICACIONES POLÉMICAS:';
 SELECT 
     u.nickname,
-    COUNT(p.id) AS total_publicaciones  -- Cambié idPublicacion por id
+    COUNT(p.id) AS total_publicaciones  -- se cambio idPublicacion por id
 FROM Creador c
 JOIN Usuario u ON c.idUsuario = u.id
 LEFT JOIN Publicacion p ON c.idUsuario = p.idCreador

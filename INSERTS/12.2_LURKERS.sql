@@ -25,7 +25,7 @@ PRINT 'Lurkers actuales: ' + CAST(@lurkers_actuales AS VARCHAR);
 
 IF @lurkers_actuales >= 3
 BEGIN
-    PRINT '✅ Ya existen ' + CAST(@lurkers_actuales AS VARCHAR) + ' lurkers. No es necesario crear más.';
+    PRINT ' Ya existen ' + CAST(@lurkers_actuales AS VARCHAR) + ' lurkers. No es necesario crear más.';
     
     -- Mostrar los lurkers existentes
     SELECT 
@@ -81,7 +81,7 @@ SELECT
     1 -- Activo
 FROM (VALUES (1),(2),(3),(4),(5),(6),(7),(8),(9),(10)) AS numeros(n);
 
-PRINT '✅ 10 usuarios lurkers creados';
+PRINT ' 10 usuarios lurkers creados';
 GO
 
 -- ==========================================
@@ -105,7 +105,7 @@ FROM Usuario u
 WHERE u.id > @max_id  -- Solo los nuevos lurkers
   AND NOT EXISTS (SELECT 1 FROM Suscripcion WHERE idUsuario = u.id);
 
-PRINT '✅ Suscripciones para lurkers creadas';
+PRINT ' Suscripciones para lurkers creadas';
 GO
 
 -- ==========================================
@@ -124,7 +124,7 @@ SELECT
     CASE 
         WHEN EXISTS (SELECT 1 FROM UsuarioReaccionPublicacion WHERE idUsuario = u.id) THEN '❌ TIENE REACCIONES'
         WHEN EXISTS (SELECT 1 FROM Comentario WHERE idUsuario = u.id) THEN '❌ TIENE COMENTARIOS'
-        ELSE '✅ LURKER PURO'
+        ELSE N'✅ LURKER PURO'
     END AS [Estado]
 FROM Usuario u
 JOIN Suscripcion s ON u.id = s.idUsuario

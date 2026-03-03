@@ -322,7 +322,7 @@ END;
 CLOSE cursor_pubs_polemicas;
 DEALLOCATE cursor_pubs_polemicas;
 
-PRINT '✅ ' + CAST(@comentario_count AS VARCHAR) + ' comentarios adicionales agregados a publicaciones polémicas';
+PRINT N'✅ ' + CAST(@comentario_count AS VARCHAR) + ' comentarios adicionales agregados a publicaciones polémicas';
 GO
 
 -- ==========================================
@@ -389,7 +389,7 @@ BEGIN
     END;
 END;
 
-PRINT '✅ ' + CAST(@hilo_polemico_id - 1 AS VARCHAR) + ' hilos de discusión creados';
+PRINT N'✅ ' + CAST(@hilo_polemico_id - 1 AS VARCHAR) + ' hilos de discusión creados';
 GO
 
 -- ==========================================

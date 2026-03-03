@@ -44,10 +44,10 @@ ORDER BY name;
 IF @@ROWCOUNT = 0
     PRINT '✓ No quedan bases de datos con el nombre FanHub';
 ELSE
-    PRINT '⚠️ Aún existen bases de datos con ese nombre';
+    PRINT ' Aún existen bases de datos con ese nombre';
 GO
 
 PRINT '========================================';
-PRINT '✅ PROCESO DE ELIMINACIÓN COMPLETADO';
+PRINT ' PROCESO DE ELIMINACIÓN COMPLETADO';
 PRINT '========================================';
 GO

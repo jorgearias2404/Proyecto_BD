@@ -100,7 +100,7 @@ SELECT
 FROM Texto;
 GO
 
--- Ver muestra de textos insertados (CORREGIDO)
+-- Ver muestra de textos insertados (con conversión a VARCHAR para evitar problemas de longitud)
 SELECT TOP 10
     t.idPublicacion,
     p.titulo,
@@ -125,7 +125,7 @@ JOIN Publicacion p ON t.idPublicacion = p.id
 ORDER BY t.idPublicacion;
 GO
 
--- Estadísticas de longitud de contenido (CORREGIDO)
+-- Estadísticas de longitud de contenido
 SELECT 
     'Longitud promedio contenido' as Concepto,
     AVG(LEN(CAST(contenido_html AS VARCHAR(MAX)))) as Valor

@@ -11,7 +11,7 @@
 --                usuarios, creadores o publicaciones.
 -- ==============================================================================================
 
-USE FanHub_BD; -- Reemplace con el nombre real de su BD
+USE FanHub_BD; 
 GO
 
 PRINT 'Iniciando carga de datos de Catálogos...';

@@ -53,7 +53,7 @@ WHERE
         WHERE pe.idPublicacion = p.id AND pe.idEtiqueta = e.id
     );
 
-PRINT '✅ Asociaciones principales generadas';
+PRINT ' Asociaciones principales generadas';
 GO
 
 -- ==========================================
@@ -75,7 +75,7 @@ WHERE NOT EXISTS (
 AND RAND(CHECKSUM(NEWID())) < 0.3
 ORDER BY NEWID();  -- El ORDER BY ahora funciona porque no hay SELECT DISTINCT
 
-PRINT '✅ Asociaciones adicionales agregadas';
+PRINT ' Asociaciones adicionales agregadas';
 GO
 
 -- ==========================================
@@ -103,7 +103,7 @@ BEGIN
     SELECT @TotalActual = COUNT(*) FROM PublicacionEtiqueta;
 END;
 
-PRINT '✅ Volumen completado';
+PRINT 'Volumen completado';
 GO
 
 -- ==========================================
