@@ -2,7 +2,7 @@ USE FanHub_BD;
 GO
 
 PRINT '========================================';
-PRINT 'CREANDO 10 USUARIOS LURKERS (VERSIÓN SEGURA)';
+PRINT 'CREANDO 10 USUARIOS LURKERS';
 PRINT '========================================';
 GO
 
