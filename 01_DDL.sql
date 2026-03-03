@@ -2,8 +2,22 @@
 -- 01_DDL.sql - Creación de tablas FanHub 
 -- =====================================================
 
+USE master; -- Nos salimos de la base de datos para poder borrarla
+GO
+
+-- Si la base de datos ya existe, forzamos el cierre de conexiones y la borramos
+IF DB_ID('FanHub_BD') IS NOT NULL
+BEGIN
+    ALTER DATABASE FanHub_BD SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
+    DROP DATABASE FanHub_BD;
+    PRINT 'Base de datos vieja destruida correctamente.';
+END
+GO
+
+-- Ahora sí, la creamos totalmente nueva y limpia
 CREATE DATABASE FanHub_BD;
 GO
+
 USE FanHub_BD;
 GO
 
