@@ -141,10 +141,9 @@ PRINT 'CREANDO PROCEDIMIENTOS ALMACENADOS (SPs)';
 PRINT '========================================';
 GO
 
--- ====================================================================
+
 --  Procesar Nueva Suscripción y Generar Factura
 -- Lógica: Crea la suscripción y su factura automáticamente en una sola transacción.
--- ====================================================================
 CREATE OR ALTER PROCEDURE sp_nueva_suscripcion
     @idUsuario INT,
     @idNivel INT
@@ -197,10 +196,9 @@ BEGIN
 END;
 GO
 
--- ====================================================================
+
 --  Cancelar Suscripción
 -- Lógica: Actualiza el estado a 'Cancelada' y corta las fechas de renovación.
--- ====================================================================
 CREATE OR ALTER PROCEDURE sp_cancelar_suscripcion
     @idSuscripcion INT
 AS

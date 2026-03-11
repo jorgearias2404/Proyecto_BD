@@ -90,10 +90,6 @@ GO
 PRINT 'Carga de Catálogos finalizada exitosamente.';
 
 
-
-
-
-
 -- ==========================================
 -- 1. USUARIOS (260 registros reales)
 -- ==========================================
@@ -365,9 +361,6 @@ PRINT ' 260 usuarios reales insertados correctamente';
 GO
 
 
------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------
-
 -- ==========================================
 -- 2. CREADORES (30 registros - 26 normales + 4 polémicos)
 -- ==========================================
@@ -408,11 +401,6 @@ INSERT INTO Creador (idUsuario, biografia, banco_nombre, banco_cuenta, es_nsfw, 
 
 PRINT ' 30 creadores insertados correctamente (26 normales + 4 polémicos)';
 GO
-
-
------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------
-
 
 -- ==========================================
 -- 3. NIVELES DE SUSCRIPCIÓN (57 registros reales)
@@ -482,10 +470,6 @@ INSERT INTO NivelSuscripcion (idCreador, nombre, descripcion, precio_actual, est
 
 PRINT ' 57 niveles de suscripción insertados';
 GO
-
-
------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------
 
 -- ==========================================
 -- 4. PUBLICACIONES (850 registros)
@@ -1347,13 +1331,9 @@ INSERT INTO Publicacion (idCreador, titulo, fecha_publicacion, es_publica, tipo_
 PRINT ' 850 publicaciones insertadas correctamente';
 GO
 
------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------
 
-
--- ==========================================
 -- PUBLICACIONES POLÉMICAS PARA CREADORES 27-30
--- ==========================================
+
 USE FanHub_BD;
 GO
 
@@ -1362,9 +1342,9 @@ PRINT 'CREANDO PUBLICACIONES POLÉMICAS';
 PRINT '========================================';
 GO
 
--- ==========================================
+
 -- 1. VERIFICAR QUE LOS CREADORES POLÉMICOS EXISTEN
--- ==========================================
+
 IF NOT EXISTS (SELECT 1 FROM Usuario WHERE id = 27)
 BEGIN
     PRINT 'ERROR: Faltan los usuarios 27-30. Debes insertarlos primero.';
@@ -1372,9 +1352,9 @@ BEGIN
 END
 GO
 
--- ==========================================
+
 -- 2. CREAR PUBLICACIONES POLÉMICAS (3 cada uno = 12 publicaciones)
--- ==========================================
+
 PRINT 'Creando publicaciones para creadores polémicos...';
 
 DECLARE @creador_polemico INT;
@@ -1490,9 +1470,8 @@ DEALLOCATE cursor_polemicos;
 PRINT 'Publicaciones polémicas creadas (3 por cada creador)';
 GO
 
--- ==========================================
+
 -- 3. VERIFICACIÓN CON LOS NOMBRES CORRECTOS 
--- ==========================================
 PRINT '';
 PRINT 'RESUMEN DE PUBLICACIONES POLÉMICAS:';
 SELECT 
@@ -1507,13 +1486,8 @@ GO
 
 
 
------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------
 
-
--- ==========================================
 -- 5. DETALLES POR TIPO - VIDEOS
--- ==========================================
 PRINT 'Insertando detalles de videos...';
 
 -- Primero, limpiar videos existentes si los hay
@@ -1543,13 +1517,7 @@ SELECT COUNT(*) as TotalVideos FROM Video;
 GO
 
 
-
------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------
-
--- ==========================================
 -- 6. ETIQUETAS (37 registros) 
--- ==========================================
 USE FanHub_BD;
 GO
 
@@ -1637,13 +1605,8 @@ GO
 
 
 
------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------
 
-
--- ==========================================
 -- 7. ASOCIACIONES ETIQUETAS-PUBLICACIONES 
--- ==========================================
 USE FanHub_BD;
 GO
 
@@ -1652,17 +1615,15 @@ PRINT 'REFRESH DE PUBLICACIONETIQUETA - VERSIÓN ALTA';
 PRINT '========================================';
 GO
 
--- ==========================================
+
 -- 1. ELIMINAR REGISTROS EXISTENTES
--- ==========================================
 PRINT 'Eliminando asociaciones existentes...';
 DELETE FROM PublicacionEtiqueta;
-PRINT '✅ Asociaciones eliminadas';
+PRINT ' Asociaciones eliminadas';
 GO
 
--- ==========================================
--- 2. GENERAR NUEVAS ASOCIACIONES (MUCHAS)
--- ==========================================
+
+-- 2. GENERAR NUEVAS ASOCIACIONES
 PRINT 'Generando asociaciones masivas...';
 
 -- Insertar asociaciones para TODAS las combinaciones posibles
@@ -1699,9 +1660,8 @@ WHERE
 PRINT ' Asociaciones principales generadas';
 GO
 
--- ==========================================
+
 -- 3. AGREGAR ASOCIACIONES ADICIONALES ALEATORIAS
--- ==========================================
 PRINT 'Agregando asociaciones adicionales aleatorias...';
 
 -- Segunda pasada: usar TOP sin ORDER BY problemático
@@ -1716,14 +1676,13 @@ WHERE NOT EXISTS (
     WHERE pe.idPublicacion = p.id AND pe.idEtiqueta = e.id
 )
 AND RAND(CHECKSUM(NEWID())) < 0.3
-ORDER BY NEWID();  -- El ORDER BY ahora funciona porque no hay SELECT DISTINCT
+ORDER BY NEWID();  
 
 PRINT ' Asociaciones adicionales agregadas';
 GO
 
--- ==========================================
+
 -- 4. TERCERA PASADA: COMPLETAR HASTA LLEGAR A ~31,450
--- ==========================================
 PRINT 'Completando hasta alcanzar volumen deseado...';
 
 DECLARE @TotalActual INT;
@@ -1749,9 +1708,8 @@ END;
 PRINT 'Volumen completado';
 GO
 
--- ==========================================
+
 -- 5. VERIFICAR RESULTADO FINAL
--- ==========================================
 PRINT '========================================';
 PRINT 'RESULTADO FINAL:';
 PRINT '========================================';
@@ -1786,9 +1744,7 @@ SELECT
     END;
 GO
 
--- ==========================================
 -- 6. VER DISTRIBUCIÓN POR CATEGORÍA
--- ==========================================
 SELECT 
     cat.nombre as Categoria,
     COUNT(DISTINCT pe.idPublicacion) as Publicaciones,
@@ -1808,34 +1764,21 @@ PRINT '========================================';
 GO
 
 
-
-
-
-
------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------
-
-
-
--- ==========================================
 -- 8. MÉTODOS DE PAGO (260 registros con variedad de tarjetas)
--- ==========================================
 PRINT '========================================';
 PRINT 'LIMPIANDO Y REGENERANDO MÉTODOS DE PAGO';
 PRINT '========================================';
 GO
 
--- ==========================================
+
 -- 1. LIMPIAR MÉTODOS DE PAGO EXISTENTES
--- ==========================================
 PRINT 'Eliminando métodos de pago existentes...';
 DELETE FROM MetodoPago;
 PRINT 'Métodos de pago eliminados';
 GO
 
--- ==========================================
--- 2. INSERTAR NUEVOS MÉTODOS DE PAGO CON VARIEDAD
--- ==========================================
+
+-- 2. INSERTAR MÉTODOS DE PAGO CON VARIEDAD
 PRINT 'Insertando 260 métodos de pago con variedad de tarjetas...';
 
 INSERT INTO MetodoPago (idUsuario, ultimos_4_digitos, marca, titular, fecha_expiracion, es_predeterminado)
@@ -1848,7 +1791,7 @@ SELECT
         WHEN 2 THEN 'American Express'
         WHEN 3 THEN 'Discover'
         WHEN 4 THEN 'Maestro'
-        ELSE 'Visa' -- Un poco más de Visa para mantener equilibrio
+        ELSE 'Visa' 
     END,
     u.nickname,
     DATEFROMPARTS(
@@ -1867,9 +1810,8 @@ ORDER BY u.id;
 PRINT ' 260 métodos de pago insertados correctamente';
 GO
 
--- ==========================================
+
 -- 3. VERIFICAR LA DISTRIBUCIÓN DE TARJETAS
--- ==========================================
 PRINT '========================================';
 PRINT 'DISTRIBUCIÓN DE TIPOS DE TARJETA:';
 PRINT '========================================';
@@ -1883,9 +1825,8 @@ GROUP BY marca
 ORDER BY Cantidad DESC;
 GO
 
--- ==========================================
+
 -- 4. VER MUESTRA DE LOS NUEVOS MÉTODOS DE PAGO
--- ==========================================
 PRINT 'Muestra de los nuevos métodos de pago:';
 SELECT TOP 20
     id,
@@ -1907,14 +1848,7 @@ GO
 
 
 
------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------
-
-
-
--- ==========================================
 --9. SUSCRIPCIONES (550 registros reales)
--- ==========================================
 USE FanHub_BD;
 GO
 
@@ -2507,17 +2441,7 @@ PRINT '========================================';
 GO
 
 
-
-
-
-
------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------
-
-
--- ==========================================
 -- 10. FACTURAS (550 registros reales)
--- ==========================================
 USE FanHub_BD;
 GO
 
@@ -2541,13 +2465,8 @@ PRINT ' Facturas generadas exitosamente.';
 GO
 
 
------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------
 
-
--- ==========================================
 -- 11. REACCIONES (1600 registros nuevos con distribución realista)
--- ==========================================
 USE FanHub_BD;
 GO
 
@@ -2556,20 +2475,18 @@ PRINT 'GENERANDO NUEVAS REACCIONES';
 PRINT '========================================';
 GO
 
--- ==========================================
--- 1. ELIMINAR REACCIONES EXISTENTES (OPCIONAL)
--- ==========================================
+
+-- 1. ELIMINAR REACCIONES EXISTENTES
 PRINT 'Eliminando reacciones existentes...';
 DELETE FROM UsuarioReaccionPublicacion;
 PRINT ' Reacciones eliminadas';
 GO
 
--- ==========================================
+
 -- 2. GENERAR 1600 NUEVAS REACCIONES
--- ==========================================
 PRINT 'Generando 1600 nuevas reacciones...';
 
--- Crear tabla temporal con la distribución deseada
+-- Creacion de tabla temporal 
 DECLARE @Reacciones TABLE (idTipoReaccion INT, peso INT);
 INSERT INTO @Reacciones VALUES 
 (1, 235),  -- Me gusta
@@ -2635,9 +2552,8 @@ END;
 PRINT ' 1600 reacciones insertadas correctamente';
 GO
 
--- ==========================================
+
 -- 3. VERIFICAR DISTRIBUCIÓN FINAL
--- ==========================================
 PRINT '========================================';
 PRINT 'VERIFICACIÓN DE DISTRIBUCIÓN:';
 PRINT '========================================';
@@ -2652,9 +2568,8 @@ GROUP BY tr.nombre
 ORDER BY Cantidad DESC;
 GO
 
--- ==========================================
+
 -- 4. ESTADÍSTICAS GENERALES
--- ==========================================
 SELECT 
     'Total reacciones' as Concepto,
     COUNT(*) as Valor
@@ -2692,16 +2607,7 @@ PRINT '========================================';
 GO
 
 
-
-
-
------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------
-
-
--- ==========================================
 -- 12 COMENTARIOS (1100 registros: 950 principales + 150 hilos)
--- ==========================================
 USE FanHub_BD;
 GO
 
@@ -2710,17 +2616,15 @@ PRINT 'GENERANDO NUEVOS COMENTARIOS';
 PRINT '========================================';
 GO
 
--- ==========================================
+
 -- 1. ELIMINAR COMENTARIOS EXISTENTES
--- ==========================================
 PRINT 'Eliminando comentarios existentes...';
 DELETE FROM Comentario;
 PRINT ' Comentarios eliminados';
 GO
 
--- ==========================================
+
 -- 2. CREAR TABLA TEMPORAL (VERIFICAR QUE NO EXISTA)
--- ==========================================
 PRINT 'Creando tabla temporal de textos...';
 
 -- Eliminar si existe
@@ -2762,9 +2666,8 @@ INSERT INTO #TempTextosComentarios (texto) VALUES
 PRINT ' Tabla temporal creada';
 GO
 
--- ==========================================
+
 -- 3. GENERAR COMENTARIOS PRINCIPALES (950)
--- ==========================================
 PRINT 'Generando 950 comentarios principales...';
 
 DECLARE @comentario_id INT = 1;
@@ -2816,9 +2719,8 @@ END;
 PRINT ' 950 comentarios principales insertados';
 GO
 
--- ==========================================
+
 -- 4. VERIFICAR QUE HAY COMENTARIOS PRINCIPALES
--- ==========================================
 DECLARE @TotalPrincipales INT;
 SELECT @TotalPrincipales = COUNT(*) FROM Comentario WHERE idComentarioPadre IS NULL;
 
@@ -2832,9 +2734,8 @@ BEGIN
 END
 GO
 
--- ==========================================
+
 -- 5. GENERAR HILOS DE CONVERSACIÓN (150 respuestas)
--- ==========================================
 PRINT 'Generando 150 hilos de conversación...';
 
 DECLARE @hilo_id INT = 1;
@@ -2896,9 +2797,8 @@ END;
 PRINT ' 150 hilos de conversación insertados';
 GO
 
--- ==========================================
+
 -- 5B. AGREGAR COMENTARIOS ADICIONALES PARA CREADORES POLÉMICOS (27-30)
--- ==========================================
 PRINT '========================================';
 PRINT 'AGREGANDO COMENTARIOS A PUBLICACIONES POLÉMICAS';
 PRINT '========================================';
@@ -3026,9 +2926,8 @@ DEALLOCATE cursor_pubs_polemicas;
 PRINT N'✅ ' + CAST(@comentario_count AS VARCHAR) + ' comentarios adicionales agregados a publicaciones polémicas';
 GO
 
--- ==========================================
+
 -- 5C. CREAR HILOS DE DISCUSIÓN EN PUBLICACIONES POLÉMICAS
--- ==========================================
 PRINT 'Creando hilos de discusión en publicaciones polémicas...';
 
 -- Declarar variables para este bloque
@@ -3093,9 +2992,8 @@ END;
 PRINT N'✅ ' + CAST(@hilo_polemico_id - 1 AS VARCHAR) + ' hilos de discusión creados';
 GO
 
--- ==========================================
+
 -- 6. VERIFICAR ESTADÍSTICAS FINALES
--- ==========================================
 PRINT '========================================';
 PRINT 'VERIFICACIÓN DE COMENTARIOS:';
 PRINT '========================================';
@@ -3170,9 +3068,8 @@ WHERE cr.idUsuario BETWEEN 27 AND 30
 ORDER BY c.fecha DESC;
 GO
 
--- ==========================================
+
 -- 7. LIMPIAR TABLA TEMPORAL
--- ==========================================
 IF OBJECT_ID('tempdb..#TempTextosComentarios') IS NOT NULL
     DROP TABLE #TempTextosComentarios;
 
@@ -3180,10 +3077,6 @@ PRINT '========================================';
 PRINT 'COMENTARIOS GENERADOS EXITOSAMENTE';
 PRINT '========================================';
 GO
-
-
------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------
 
 
 USE FanHub_BD;
@@ -3194,7 +3087,7 @@ PRINT 'CREANDO 10 USUARIOS LURKERS';
 PRINT '========================================';
 GO
 
--- 1. CREAR NUEVOS USUARIOS LURKERS (Dejamos que SQL asigne el ID solo)
+-- 1. creamos nuevos usuarios lurkers (Dejamos que SQL asigne el ID solo)
 PRINT 'Insertando 10 usuarios fantasma...';
 INSERT INTO Usuario (email, password_hash, nickname, fecha_registro, fecha_nacimiento, pais, esta_activo)
 SELECT 
@@ -3208,7 +3101,7 @@ SELECT
 FROM (VALUES (1),(2),(3),(4),(5),(6),(7),(8),(9),(10)) AS numeros(n);
 GO
 
--- 2. CREAR SUSCRIPCIONES (Usamos un ID de Nivel que SÍ exista en tu tabla)
+-- 2. CREAR SUSCRIPCIONES (Usamos un ID de Nivel que SÍ exista en nuestra tabla)
 PRINT 'Asignando suscripciones a los lurkers...';
 DECLARE @idNivelReal INT = (SELECT TOP 1 id FROM NivelSuscripcion);
 
@@ -3227,7 +3120,7 @@ GO
 
 -- 3. VERIFICACIÓN
 PRINT '========================================';
-PRINT '✅ LURKERS INYECTADOS EXITOSAMENTE.';
+PRINT 'LURKERS INYECTADOS EXITOSAMENTE.';
 PRINT '========================================';
 
 SELECT 
@@ -3239,12 +3132,9 @@ JOIN Suscripcion s ON u.id = s.idUsuario
 WHERE u.email LIKE 'lurker_pro_%';
 GO
 
------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------
 
--- ==========================================
+
 -- 13. DETALLES POR TIPO - IMÁGENES
--- ==========================================
 USE FanHub_BD;
 GO
 
@@ -3297,9 +3187,8 @@ AND NOT EXISTS (SELECT 1 FROM Imagen i WHERE i.idPublicacion = p.id);
 PRINT ' Imágenes insertadas correctamente';
 GO
 
--- ==========================================
+
 -- VERIFICAR IMÁGENES INSERTADAS
--- ==========================================
 PRINT '========================================';
 PRINT 'VERIFICACIÓN DE IMÁGENES:';
 PRINT '========================================';
@@ -3332,12 +3221,8 @@ PRINT ' IMÁGENES INSERTADAS CORRECTAMENTE';
 PRINT '========================================';
 GO
 
------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------
 
--- ==========================================
 -- 14. DETALLES POR TIPO - TEXTOS
--- ==========================================
 USE FanHub_BD;
 GO
 
@@ -3421,9 +3306,7 @@ AND NOT EXISTS (SELECT 1 FROM Texto t WHERE t.idPublicacion = p.id);
 PRINT ' Textos insertados correctamente';
 GO
 
--- ==========================================
--- VERIFICAR TEXTOS INSERTADOS (CORREGIDO - SIN LEFT EN TEXT)
--- ==========================================
+-- VERIFICAR TEXTOS INSERTADOS 
 PRINT '========================================';
 PRINT 'VERIFICACIÓN DE TEXTOS:';
 PRINT '========================================';
@@ -3437,12 +3320,12 @@ SELECT
 FROM Texto;
 GO
 
--- Ver muestra de textos insertados (con conversión a VARCHAR para evitar problemas de longitud)
+-- Ver muestra de textos insertados 
 SELECT TOP 10
     t.idPublicacion,
     p.titulo,
     p.es_publica,
-    -- Convertir TEXT a VARCHAR para poder usar LEFT
+
     CASE 
         WHEN LEN(CAST(t.contenido_html AS VARCHAR(MAX))) > 100 
         THEN LEFT(CAST(t.contenido_html AS VARCHAR(MAX)), 100) + '...'
@@ -3482,6 +3365,3 @@ PRINT '========================================';
 PRINT 'TEXTOS INSERTADOS CORRECTAMENTE';
 PRINT '========================================';
 GO
-
------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------
